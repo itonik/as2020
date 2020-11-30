@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Console</title>
+    </head>
+    <body>
+        <h1>WebSocket Console</h1>
+        <form action="" onsubmit="sendMessage(event)">
+            <button onclick="connect(event)">Connect</button>
+            <button onclick="disconnect(event)">Disconnect</button>
+            <span id="indicator"><font color="red">Disconnected</font></span>
+            <hr>
+            <label>Message: <input type="text" id="messageText" autocomplete="off"/></label>
+            <button>Send</button>
+        </form>
+        <ul id='messages'>
+        </ul>
+        <script>
+            var ws = null;
+
+            function connect(event) {
+                var itemId = document.getElementById("itemId")
+                var token = document.getElementById("token")
+                ws = new WebSocket("ws://localhost:8000/ws/");
+                var indicator = document.getElementById('indicator');
+                indicator.innerHTML = `<font color="green">Connected</font>`;
+                ws.onmessage = function(event) {
+                    var messages = document.getElementById('messages')
+                    var message = document.createElement('li')
+                    var content = document.createTextNode(event.data)
+                    message.appendChild(content)
+                    messages.prepend(message)
+                };
+                ws.onclose = function(event) {
+                    var indicator = document.getElementById('indicator');
+                    indicator.innerHTML = `<font color="red">Disconnected</font>`;
+                }
+                event.preventDefault()
+            }
+
+            function sendMessage(event) {
+                var input = document.getElementById("messageText")
+                ws.send(input.value)
+                input.value = ''
+                event.preventDefault()
+            }
+
+            function disconnect(event) {
+                ws.close()
+            }
+        </script>
+    </body>
+</html>
