@@ -13,40 +13,41 @@
             <label>Message: <input type="text" id="messageText" autocomplete="off"/></label>
             <button>Send</button>
         </form>
-        <ul id='messages'>
+        <ul id='messages' style="font-family: monospace">
         </ul>
         <script>
             var ws = null;
 
-            function connect(event) {
-                var itemId = document.getElementById("itemId")
-                var token = document.getElementById("token")
+            function connect(event) {                
                 ws = new WebSocket("ws://localhost:8000/ws/");
-                var indicator = document.getElementById('indicator');
-                indicator.innerHTML = `<font color="green">Connected</font>`;
+                
                 ws.onmessage = function(event) {
-                    var messages = document.getElementById('messages')
-                    var message = document.createElement('li')
-                    var content = document.createTextNode(event.data)
-                    message.appendChild(content)
-                    messages.prepend(message)
+                    var messages = document.getElementById('messages');
+                    var message = document.createElement('li');
+                    var content = document.createTextNode(event.data);
+                    message.appendChild(content);
+                    messages.prepend(message);
                 };
                 ws.onclose = function(event) {
                     var indicator = document.getElementById('indicator');
                     indicator.innerHTML = `<font color="red">Disconnected</font>`;
                 }
+                ws.onopen = function(event) {
+                    var indicator = document.getElementById('indicator');
+                    indicator.innerHTML = `<font color="green">Connected</font>`;
+                }
                 event.preventDefault()
             }
 
             function sendMessage(event) {
-                var input = document.getElementById("messageText")
-                ws.send(input.value)
-                input.value = ''
-                event.preventDefault()
+                var input = document.getElementById("messageText");
+                ws.send(input.value);
+                input.value = '';
+                event.preventDefault();
             }
 
             function disconnect(event) {
-                ws.close()
+                ws.close();
             }
         </script>
     </body>
