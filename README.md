@@ -6,6 +6,7 @@
 python3 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
+./serve.sh
 ```
 
 (На Windows активация venv: venv\Scripts\deactivate.bat)
