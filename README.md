@@ -9,7 +9,7 @@ pip install -r requirements.txt
 ./serve.sh
 ```
 
-(На Windows активация venv: venv\Scripts\deactivate.bat)
+(На Windows активация venv: venv\Scripts\activate.bat)
 
 ## Основы asyncio
 
